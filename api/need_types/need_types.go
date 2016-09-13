@@ -8,19 +8,17 @@ import (
 	"github.com/toddbluhm/help-people-api/api/api_context"
 )
 
-var needTypes = []string{
-	"Diapers",
-	"Food",
-	"Place to Sleep",
-	"Flat Tire",
-	"Someone to Listen",
-}
-
 type NeedTypesCtx struct {
 	*api_context.APIContext
 }
 
 func (ctx *NeedTypesCtx) GetNeedTypes(rw web.ResponseWriter, req *web.Request) {
+	var needTypes []string
+	fmt.Println(ctx.Context.DB)
+	ctx.Context.DB.
+		Select("name").
+		From("need_types").
+		LoadValues(&needTypes)
 	data, err := json.Marshal(needTypes)
 	if err != nil {
 		panic("Could not marshal data")
