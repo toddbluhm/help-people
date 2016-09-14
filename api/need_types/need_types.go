@@ -8,13 +8,8 @@ import (
 	"github.com/toddbluhm/help-people-api/api/api_context"
 )
 
-type NeedTypesCtx struct {
-	*api_context.APIContext
-}
-
-func (ctx *NeedTypesCtx) GetNeedTypes(rw web.ResponseWriter, req *web.Request) {
+func GetNeedTypes(ctx *api_context.APIContext, rw web.ResponseWriter, req *web.Request) {
 	var needTypes []string
-	fmt.Println(ctx.Context.DB)
 	ctx.Context.DB.
 		Select("name").
 		From("need_types").
@@ -27,7 +22,5 @@ func (ctx *NeedTypesCtx) GetNeedTypes(rw web.ResponseWriter, req *web.Request) {
 }
 
 func AttachRouter(rootRouter *web.Router) {
-	rootRouter.Subrouter(NeedTypesCtx{}, "/").
-		Get("/need-types", (*NeedTypesCtx).GetNeedTypes)
-	return
+	rootRouter.Get("/need-types", GetNeedTypes)
 }

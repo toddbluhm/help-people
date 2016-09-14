@@ -18,7 +18,7 @@ func main() {
 	stream.AddSink(&health.WriterSink{os.Stdout})
 
 	dbConnection := db.Init(stream)
-	defer db.Close()
+	defer dbConnection.Close()
 
 	router := CreateRouter(dbConnection)
 	http.ListenAndServe("localhost:3000", router) // Start the server!
